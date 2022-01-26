@@ -11,7 +11,18 @@ public:
                 temp += tolower(ch);
             }
         }
-        string temp_reversed(temp.rbegin(), temp.rend());
-        return temp == temp_reversed;
+        
+        int left =0, right = temp.size()-1;
+        
+        while(left < right)
+        {
+            if(temp[left] != temp[right])
+            {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 };
