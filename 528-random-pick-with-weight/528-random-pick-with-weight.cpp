@@ -4,25 +4,23 @@ public:
     vector<int>prefix;
     Solution(vector<int>& w) 
     {
-        
-        for(auto & W : w)
+        for(auto& x : w)
         {
-            sum += W;
+            sum += x;
             prefix.push_back(sum);
         }
     }
     
     int pickIndex() 
     {
-        int random = rand()%sum;
+        int weight = rand()% sum;
+        int left=0, right=prefix.size()-1;
         
-        int left =0, right = prefix.size()-1;
-        
-        while(left < right)
+        while(left<right)
         {
             int mid = left + (right-left)/2;
             
-            if(random >= prefix[mid])
+            if(weight >= prefix[mid])
             {
                 left = mid+1;
             }
@@ -30,20 +28,10 @@ public:
             {
                 right = mid;
             }
-            
         }
         return left;
     }
 };
-
-
-
-
-/**
- * Your Solution object will be instantiated and called as such:
- * Solution* obj = new Solution(w);
- * int param_1 = obj->pickIndex();
- */
 
 /**
  * Your Solution object will be instantiated and called as such:
