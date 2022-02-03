@@ -2,40 +2,37 @@ class Solution {
 public:
     string minRemoveToMakeValid(string s) 
     {
-        stack<int>stk;
-        vector<int>deleteIndex;
+        int left=0, right = count(begin(s), end(s), ')');
+        string ans = "";
         
-        for(int i=0; i<s.size(); i++)
+        for(auto& c : s)
         {
-            if(s[i] == '(')
+            if(c == '(')
             {
-                stk.push(i);
-            }
-            if(s[i] == ')')
-            {
-                if(stk.empty())
+                if(right)
                 {
-                    deleteIndex.push_back(i);
+                    ans += c;
+                    right--; 
+                    left++;
+                }
+            }
+            else if(c==')')
+            {
+                if(left)
+                {
+                    ans += c;
+                    left--;
                 }
                 else
                 {
-                    stk.pop();
+                    right--;
                 }
             }
+            else
+            {
+                ans += c;
+            }
         }
-        int temp = deleteIndex.size();
-        while(!stk.empty())
-        {
-            deleteIndex.push_back(stk.top());
-            stk.pop();
-        }
-        reverse(deleteIndex.begin()+temp, deleteIndex.end());
-        
-        auto size = s.begin();
-        for(auto it = deleteIndex.rbegin(); it != deleteIndex.rend(); it++)
-        {
-            s.erase(size + *it);
-        }
-        return s;
+        return ans;
     }
 };
