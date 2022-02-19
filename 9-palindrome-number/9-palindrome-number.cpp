@@ -2,15 +2,21 @@ class Solution {
 public:
     bool isPalindrome(int x) 
     {
-        if (x < 0 || (x%10 == 0 && x !=0)) return false;
+        if(x <0 || x%10==0 && x != 0) return false;
         
-        int reversedNumber = 0;
-        while (x > reversedNumber)
+        string s = to_string(x);
+        
+        int left =0, right = s.size()-1;
+        
+        while (left <= right)
         {
-            reversedNumber = reversedNumber * 10 + x %10;
-            x /= 10;
+            if(s[left] != s[right])
+            {
+                return false;
+            }
+            left++;
+            right--;
         }
-        return x == reversedNumber || x == reversedNumber/10;
+        return true;
     }
-    
 };
