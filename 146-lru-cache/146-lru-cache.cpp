@@ -1,34 +1,68 @@
 class LRUCache {
 public:
-    LRUCache(int capacity) : cap(capacity) {
+    struct Node{
+        int key, value;
+        Node* left,  *right;
+        Node(int _key, int _value):key(_key), value(_value), left(NULL), right(NULL){}
+    }*L, *R;
+    
+    int  n;
+    unordered_map<int, Node*>hash;
+    
+    void remove(Node* p)
+    {
+        p->right->left = p->left;
+        p->left->right = p->right;
     }
-
-    int get(int key) {
-        if (map.find(key) == map.end()) return -1;
-        auto key_value = *map[key];
-        cache.erase(map[key]);
-        cache.push_front(key_value);
-        map[key] = cache.begin();
-        return key_value.second;
+    void insert(Node* p)
+    {
+        p->right = L->right;
+        p->left = L;
+        L->right->left = p;
+        L->right = p;
     }
-
-    void put(int key, int value) {
-        if (map.find(key) == map.end()) {
-            if (cache.size() == cap) {
-                map.erase(cache.back().first);
-                cache.pop_back();
+    
+    LRUCache(int capacity) 
+    {
+        n = capacity;
+        L = new Node(-1,-1);
+        R = new Node(-1,-1);
+        L->right = R;
+        R->left = L;
+    }
+    
+    int get(int key) 
+    {
+        if(hash.count(key) == 0) return -1;
+        auto p = hash[key];
+        remove(p);
+        insert(p);
+        return p->value;
+    }
+    
+    void put(int key, int value)
+    {
+        if(hash.count(key))
+        {
+            auto p=hash[key];
+            p->value = value;
+            remove(p);
+            insert(p);
+        }
+        else
+        {
+            if(hash.size() == n)
+            {
+                auto p = R->left;
+                remove(p);
+                hash.erase(p->key);
+                delete p;
             }
+            auto p = new Node(key, value);
+            hash[key] = p;
+            insert(p);
         }
-        else {
-            cache.erase(map[key]);
-        }
-        cache.push_front({key, value});
-        map[key] = cache.begin();
     }
-private:
-    int cap;
-    list<pair<int, int>> cache;
-    unordered_map<int, list<pair<int, int>>::iterator> map;
 };
 
 /**
