@@ -5,18 +5,16 @@ public:
         vector<vector<string>>ans;
         map<string, vector<string>>mp;
         
-        for(auto s :strs)
+        for(string& s : strs)
         {
-            string str = string(26, '0');
-            for(auto c : s)
-            {
-                str[c-'a']++;
-            }
-            mp[str].emplace_back(s);
+            string key = s;
+            sort(key.begin(), key.end());
+            mp[key].emplace_back(s);
         }
-        for(auto e : mp)
+        
+        for(auto it = mp.begin(); it != mp.end(); it++)
         {
-            ans.emplace_back(e.second);
+            ans.emplace_back(it->second);
         }
         return ans;
     }
