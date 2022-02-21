@@ -14,9 +14,7 @@ public:
     bool helper(TreeNode* node, long long low, long long high)
     {
         if(node == nullptr) return true;
-        
-        if(node->val <=low || node->val >= high) return false;
-        
+        if(node->val <= low || node->val >= high) return false;
         return helper(node->left, low, node->val) && helper(node->right, node->val, high);
     }
     bool isValidBST(TreeNode* root) 
