@@ -2,28 +2,28 @@ class Solution {
 public:
     vector<int> findDiagonalOrder(vector<vector<int>>& mat) 
     {
-        vector<int>ans;
-        int row = mat.size(), col=mat[0].size();
-        int sum = row*col;
-        int x=0, y=0;
+        vector<int>nums;
+        int m = mat.size();
+        int n = mat[0].size();
+        if(m == 0 || n == 0) return nums;
         
-        for(int i=0; i<sum; i++)
+        bool xflag = true;
+        for(int i=0; i<m+n; i++)
         {
-            ans.push_back(mat[x][y]);
+            int pm = xflag ? m : n;
+            int pn = xflag ? n : m;
             
-            if((x+y)%2 == 0)
+            int x = (i<pm) ? i : pm-1;
+            int y = i-x;
+            
+            while(x >= 0 && y < pn)
             {
-                if(y == col-1) x++;
-                else if (x ==0) y++;
-                else x--, y++;
+                nums.push_back(xflag ? mat[x][y] : mat[y][x]);
+                x--;
+                y++;
             }
-            else
-            {
-                if(x == row-1) y++;
-                else if(y==0) x++;
-                else x++, y--;
-            }
+            xflag = !xflag;
         }
-        return ans;
+        return nums;
     }
 };
