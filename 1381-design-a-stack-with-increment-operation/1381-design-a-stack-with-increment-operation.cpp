@@ -1,45 +1,43 @@
 class CustomStack {
-private:
-    stack<int>stk;
-    vector<int>inc{vector<int>(1000, 0)};
-    int size_max =-1;
-    
 public:
+    vector<int>stk, inc;
+    int top;
     CustomStack(int maxSize) 
     {
-        size_max = maxSize;
+        stk.resize(maxSize);
+        inc.resize(maxSize);
+        top = -1;
     }
     
     void push(int x) 
     {
-        if(stk.size() < size_max)
+        if(top != stk.size()-1)
         {
-            stk.push(x);
+            ++top;
+            stk[top] = x;
         }
     }
     
     int pop() 
     {
-        if(stk.empty()) return -1;
-        else
+        if(top == -1) return -1;
+        int res = stk[top] + inc[top];
+        if(top != 0)
         {
-            int n = stk.size();
-            int val = stk.top() + inc[n-1];
-            stk.pop();
-            if(n >=2)
-            {
-                inc[n-2] += inc[n-1];
-            }
-            inc[n-1] =0;
-            return val;
+            inc[top-1] += inc[top];
         }
+        inc[top] = 0;
+        --top;
+        return res;
     }
     
     void increment(int k, int val) 
     {
-        int n = min(k, int(stk.size()));
-        if(n ==0) return;
-        else inc[n-1] += val;
+        int minInc = min(k-1, top);
+        if(minInc >= 0)
+        {
+            inc[minInc] += val;
+        }
     }
 };
 
