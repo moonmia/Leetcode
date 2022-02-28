@@ -2,28 +2,36 @@ class Solution {
 public:
     int threeSumClosest(vector<int>& nums, int target) 
     {
-        //[-4,-1,1,2]
-        int n = nums.size();
-        int sum, smallest = INT_MAX, ans;
         sort(nums.begin(), nums.end());
+        int n= nums.size();
+        int minSum = INT_MAX;
+        int sum, ans;
         
         for(int i=0; i<n; i++)
         {
-            for(int left =i+1, right =n-1; left <right;)
+            int left = i+1, right = n-1;
+            while (right > left)
             {
-                sum = nums[i]+nums[left]+nums[right];
-                
-                if(abs(sum-target) < smallest)
+                sum = nums[i] + nums[left] + nums[right];
+                if(abs(sum - target) < minSum)
                 {
-                    smallest = abs(sum-target);
+                    minSum = abs(sum-target);
                     ans = sum;
                 }
+                if(sum > target)
+                {
+                    right--;
+                    
+                }
+                else if(sum < target)
+                {
+                    left ++;
+                }
+                else
+                {
+                    return sum;
+                }
                 
-                if(sum == target) return sum;
-                
-                else if(sum < target) left++;
-                
-                else right--;
             }
         }
         return ans;
