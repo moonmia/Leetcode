@@ -3,17 +3,23 @@ public:
     int maxProfit(vector<int>& prices) 
     {
         int n = prices.size();
-        int buy1 = INT_MAX, buy2 = INT_MAX;
-        int sell1 = 0, sell2 =0;
+        int buy1 = -prices[0];
+        int sell1 = 0;
+        int buy2 = -prices[0];
+        int sell2 =0;
         
-        for(int price : prices)
+        for(int i=1; i<n; i++)
         {
-            buy1 = min(buy1, price);
-            sell1 = max(sell1, price-buy1);
-            
-            buy2 = min(buy2, price-sell1);
-            sell2 = max(sell2, price-buy2);
+            buy1 = max(buy1, -prices[i]);
+            sell1 = max(sell1, prices[i]+buy1);
+            buy2 = max(buy2, sell1-prices[i]);
+            sell2 = max(sell2, prices[i]+buy2);
         }
         return sell2;
     }
 };
+/*
+1. no operation
+2. only once
+3. 
+*/
