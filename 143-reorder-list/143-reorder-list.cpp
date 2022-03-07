@@ -13,24 +13,57 @@ public:
     void reorderList(ListNode* head) 
     {
         if(head == nullptr) return;
-        vector<ListNode*>vec;
-        ListNode* node = head;
-        while(node)
-        {
-            vec.emplace_back(node);
-            node = node->next;
-        }
         
-        int i=0, j=vec.size()-1;
+        ListNode* mid = middleNode(head);
+        ListNode* l1 = head;
+        ListNode* l2 = mid->next;
+        mid->next = nullptr;
+        l2 = reverse(l2);
+        merge(l1,l2);
         
-        while(i<j)
+    }
+    
+    ListNode* middleNode(ListNode* head)
+    {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        
+        while(fast->next && fast->next->next)
         {
-            vec[i]->next =vec[j];
-            i++;
-            if(i == j) break;
-            vec[j]->next = vec[i];
-            j--;
+            slow = slow->next;
+            fast = fast->next->next;
         }
-        vec[i]->next = nullptr;
+        return slow;
+    }
+    
+    ListNode* reverse(ListNode* head)
+    {
+        ListNode* dummy = nullptr;
+        ListNode* curr = head;
+        while(curr)
+        {
+            ListNode* next = curr->next;
+            curr->next = dummy;
+            dummy = curr;
+            curr = next;
+        }
+        return dummy;
+    }
+    
+    void merge(ListNode* l1, ListNode* l2)
+    {
+        ListNode* temp1;
+        ListNode* temp2;
+        while(l1 && l2)
+        {
+            temp1 = l1->next;
+            temp2 = l2->next;
+            
+            l1->next = l2;
+            l1 = temp1;
+            
+            l2->next = l1;
+            l2 = temp2;
+        }
     }
 };
