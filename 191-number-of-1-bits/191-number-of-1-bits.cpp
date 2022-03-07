@@ -12,3 +12,5 @@ public:
         return count;
     }
 };
+// x &= (x-1) every time remove the last binary number '1'.
+//o(logn), o(1)
