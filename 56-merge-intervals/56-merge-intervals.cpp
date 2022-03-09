@@ -2,25 +2,22 @@ class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) 
     {
-        vector<vector<int>>result;
+        if(intervals.size() == 0 ) return {};
         
-        if(intervals.size() == 0) return result;
-        
-        sort(intervals.begin(), intervals.end(), [](const vector<int>& a, const vector<int>& b) {return a[0] <b[0];});
-        
-        result.push_back(intervals[0]);
-        
-        for(int i=1; i<intervals.size(); i++)
+        sort(intervals.begin(), intervals.end());
+        vector<vector<int>>merged;
+        for(int i=0; i<intervals.size(); i++)
         {
-            if(result.back()[1] >= intervals[i][0])
+            int left = intervals[i][0], right = intervals[i][1];
+            if(!merged.size() || merged.back()[1] < left)
             {
-                result.back()[1] = max(result.back()[1], intervals[i][1]);
+                merged.push_back({left, right});
             }
             else
             {
-                result.push_back(intervals[i]);
+                merged.back()[1] = max(merged.back()[1], right);
             }
         }
-        return result;
+        return merged;
     }
 };
