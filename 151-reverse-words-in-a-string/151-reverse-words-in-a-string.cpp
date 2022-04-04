@@ -1,51 +1,45 @@
 class Solution {
 public:
-    //反转字符串
-    void reverse(string& s,int start,int end){
+    void reversed(int start, int end, string &s){
         while(start<end){
-            swap(s[start++],s[end--]);
+            swap(s[start++], s[end--]);
         }
     }
-    //移除多余空格，利用快慢指针
-    void removeExtraSpaces(string&s){
-        int slow=0,fast=0;
-        //移除开始位置的空格
-        while(s[fast]==' '){
-            fast++;
+    
+    void removeSpace(string &s){
+        int left=0, right=0;
+        int n = s.size();
+        //Remove the front space
+        while(s[right] == ' '){
+            right++;
         }
-        //移除中间位置多余的空格
-        while(fast<s.size()){
-            if(fast>0 && s[fast]==' ' &&s[fast-1]==' '){
-                fast++;
-            }
+        //Rove the middle extra space
+        while(right < n){
+            if(right > 0 && s[right] == ' ' && s[right-1] == ' ') right++;
             else{
-                s[slow]=s[fast];
-                slow++;
-                fast++;
+                s[left] = s[right];
+                left++;
+                right++;
             }
         }
-        //如果末尾仅有一个空格，则上述无法将该空格移除；如果末尾有很多空格，则上述将保留一个空格，也不符合要求；所以最终可能的情况有二：末尾有一个空格/末尾无空格
         
-        if(slow-1>0 && s[slow-1]==' '){
-            slow--;
-        }
-        s.resize(slow);
+        while(left-1 >0 && s[left-1] == ' ') left--;
+        s.resize(left);
+        
     }
-        
-    string reverseWords(string s) {
-        //step1.移除多余空格
-        removeExtraSpaces(s);
-        //step2.反转整个字符串
-        reverse(s,0,s.size()-1);
-        //step3.依次反转每个单词
-        int start=0;
-        for(int i=0;i<s.size();i++){
-            if(s[i]==' '){
-                reverse(s,start,i-1);
-                start=i+1;
+    
+    string reverseWords(string s) 
+    {
+        removeSpace(s);
+        int start = 0, end = s.size()-1;
+        reversed(start, end, s);
+        for(int i=0; i<s.size(); i++){
+            if(s[i] == ' '){
+                reversed(start, i-1, s);
+                start = i+1;
             }
-            if(i==s.size()-1){
-                reverse(s,start,i);
+            if(i == s.size()-1){
+                reversed(start, i, s);
             }
         }
         return s;
