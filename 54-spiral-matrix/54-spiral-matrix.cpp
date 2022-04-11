@@ -2,27 +2,27 @@ class Solution {
 public:
     vector<int> spiralOrder(vector<vector<int>>& matrix) 
     {
-        vector<int>result;
-        if(matrix.empty()) return result;
-        int left=0;
-        int right = matrix[0].size()-1;
-        int upper =0;
-        int bottom = matrix.size()-1;
-        
-        while  (true)
-        {
-            for(int i=left; i<=right; ++i) result.push_back(matrix[upper][i]);
-            if(++upper > bottom) break;
-        
-            for(int i=upper; i<=bottom; ++i) result.push_back(matrix[i][right]);
-            if(--right < left) break;
-        
-            for(int i=right; i>=left; --i) result.push_back(matrix[bottom][i]);
-            if(--bottom < upper) break;
-            
-            for(int i=bottom; i>=upper; --i) result.push_back(matrix[i][left]);
-            if(++left > right) break;
+        int di[4] = {0,0,-1,1};
+        int dj[4] = {1,-1,0,0};
+        int direction =0;
+        int i =0, j= -1;
+        int cnt = matrix[0].size() * matrix.size();
+        vector<int>res;
+        while (cnt >0){
+            int newDi = i + di[direction%4];
+            int newDj = j + dj[direction%4];
+            if(newDi<0 || newDj<0 || newDi >= matrix.size() || newDj >= matrix[0].size() || matrix[newDi][newDj] == -10){
+                direction++;
+            }
+            else{
+                res.push_back(matrix[newDi][newDj]);
+                matrix[newDi][newDj]=-10;
+                i = newDi;
+                j = newDj;
+                cnt--;
+                
+            }
         }
-        return result;
+        return res;
     }
 };
